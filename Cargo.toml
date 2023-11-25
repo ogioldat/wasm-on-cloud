@@ -1,6 +1,16 @@
-[workspace]
-resolver = "1"
+[package]
+name = "restaurant"
+authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
+description = "Accepting and serving orders"
+version = "0.1.0"
+edition = "2021"
 
-members = [
-    "cloud-function",
-]
+[lib]
+crate-type = [ "cdylib" ]
+
+[dependencies]
+anyhow = "1"
+http = "0.2"
+spin-sdk = { git = "https://github.com/fermyon/spin", tag = "v2.0.1" }
+
+[workspace]

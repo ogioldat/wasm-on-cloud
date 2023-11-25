@@ -1,20 +1,2 @@
-target
-
-# Added by cargo
-
-/target
-/Cargo.lock
-
-
-# Added by cargo
-#
-# already existing elements were commented out
-
-#/target
-
-
-# Added by cargo
-#
-# already existing elements were commented out
-
-#/target
+target/
+.spin/

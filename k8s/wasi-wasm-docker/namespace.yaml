@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: wasi-wasm-docker
-  labels:
-    name: wasi-wasm-docker

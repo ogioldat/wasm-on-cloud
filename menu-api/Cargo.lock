@@ -38,15 +38,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2bd12c1caf447e69cd4528f47f94d203fd2582878ecb9e9465484c4148a8223"
 
 [[package]]
-name = "cloud-function"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "http",
- "spin-sdk",
-]
-
-[[package]]
 name = "equivalent"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -222,6 +213,15 @@ name = "memchr"
 version = "2.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f665ee40bc4a3c5590afb1e9677db74a508659dfd71e126420da8274909a0167"
+
+[[package]]
+name = "menu-api"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "http",
+ "spin-sdk",
+]
 
 [[package]]
 name = "once_cell"

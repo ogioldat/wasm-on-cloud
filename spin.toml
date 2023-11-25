@@ -1,0 +1,30 @@
+spin_manifest_version = 2
+
+[application]
+name = "restaurant"
+version = "0.1.0"
+authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
+description = "Accepting and serving orders"
+
+[[trigger.http]]
+route = "/"
+component = "restaurant"
+
+[component.restaurant]
+source = "target/wasm32-wasi/release/restaurant.wasm"
+allowed_outbound_hosts = []
+[component.restaurant.build]
+command = "cargo build --target wasm32-wasi --release"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+[[trigger.http]]
+route = "/menu"
+component = "menu-api"
+
+[component.menu-api]
+source = "menu-api/target/wasm32-wasi/release/menu_api.wasm"
+allowed_outbound_hosts = []
+[component.menu-api.build]
+command = "cargo build --target wasm32-wasi --release"
+workdir = "menu-api"
+watch = ["src/**/*.rs", "Cargo.toml"]

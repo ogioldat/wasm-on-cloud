@@ -7,40 +7,72 @@ scheduling:
   nodeSelector:
     spin: "yes"
 
----
+# ---
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: cloud-function-spin
-spec:
-  selector:
-    matchLabels:
-        app: cloud-function-spin
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: cloud-function-spin
-    spec:
-      runtimeClassName: spin-runtime
-      containers:
-      - name: cloud-function-spin
-        image: docker.io/ogioldat/cloud-function:latest
-        command: ["/"]
-        ports:
-        - containerPort: 3000
-        imagePullPolicy: Always
----
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: cloud-function-spin
+# spec:
+#   selector:
+#     matchLabels:
+#         app: cloud-function-spin
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: cloud-function-spin
+#     spec:
+#       runtimeClassName: spin-runtime
+#       containers:
+#       - name: cloud-function-spin
+#         image: ghcr.io/deislabs/containerd-wasm-shims/examples/spin-rust-hello:v0.9.1
+#         command: ["/"]
+#         imagePullPolicy: Always
+# ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: cloud-function-spin
-spec:
-  type: LoadBalancer
-  selector:
-    app: cloud-function-spin
-  ports:
-    - port: 3000
-      targetPort: 3000
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: cloud-function-spin
+# spec:
+#   selector:
+#     app: cloud-function-spin
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+
+# ---
+
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: Middleware
+# metadata:
+#   name: strip-prefix
+# spec:
+#   stripPrefix:
+#     forceSlash: false
+#     prefixes:
+#       - /spin
+
+# ---
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: wasm-ingress
+#   annotations:
+#     ingress.kubernetes.io/ssl-redirect: "false"
+#     traefik.ingress.kubernetes.io/router.middlewares: default-strip-prefix@kubernetescrd
+# spec:
+#   ingressClassName: traefik
+#   rules:
+#     - http:
+#         paths:
+#           - path: /spin
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: cloud-function-spin
+#                 port:
+#                   number: 80
