@@ -1,0 +1,18 @@
+spin_manifest_version = 2
+
+[application]
+name = "cloud-function"
+version = "0.1.0"
+authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
+description = ""
+
+[[trigger.http]]
+route = "/..."
+component = "cloud-function"
+
+[component.cloud-function]
+source = "target/wasm32-wasi/release/cloud_function.wasm"
+allowed_outbound_hosts = []
+[component.cloud-function.build]
+command = "cargo build --target wasm32-wasi --release"
+watch = ["src/**/*.rs", "Cargo.toml"]

@@ -1,0 +1,46 @@
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: spin-runtime
+handler: spin
+scheduling:
+  nodeSelector:
+    spin: "yes"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-function-spin
+spec:
+  selector:
+    matchLabels:
+        app: cloud-function-spin
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cloud-function-spin
+    spec:
+      runtimeClassName: spin-runtime
+      containers:
+      - name: cloud-function-spin
+        image: docker.io/ogioldat/cloud-function:latest
+        command: ["/"]
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-function-spin
+spec:
+  type: LoadBalancer
+  selector:
+    app: cloud-function-spin
+  ports:
+    - port: 3000
+      targetPort: 3000
