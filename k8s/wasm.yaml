@@ -1,7 +1,7 @@
 apiVersion: node.k8s.io/v1
 kind: RuntimeClass
 metadata:
-  name: spin-runtime
+  name: wasmtime-spin
 handler: spin
 scheduling:
   nodeSelector:

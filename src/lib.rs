@@ -1,16 +1,7 @@
 use spin_sdk::http::{IntoResponse, Request};
 use spin_sdk::http_component;
-use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Serialize, Clone)]
-struct MenuItem {
-    name: String,
-    price: f32,
-}
-
-fn get_menu_items(): Vec<MenuItem> {
-
-}
+// TODO -- change to empty component
 
 /// A simple Spin HTTP component.
 #[http_component]
