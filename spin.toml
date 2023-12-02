@@ -2,7 +2,7 @@ spin_manifest_version = 2
 
 [application]
 name = "restaurant"
-version = "0.6.0"
+version = "0.9.0"
 authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
 description = "Accepting and serving orders"
 
@@ -39,4 +39,17 @@ allowed_outbound_hosts = []
 [component.kitchen-api.build]
 command = "cargo build --target wasm32-wasi --release"
 workdir = "kitchen-api"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+[[trigger.http]]
+route = "/order"
+component = "order-api"
+
+[component.order-api]
+source = "order-api/target/wasm32-wasi/release/order_api.wasm"
+environment = { REDIS_ADDRESS = "redis.default.svc.cluster.local" }
+allowed_outbound_hosts = []
+[component.order-api.build]
+command = "cargo build --target wasm32-wasi --release"
+workdir = "order-api"
 watch = ["src/**/*.rs", "Cargo.toml"]

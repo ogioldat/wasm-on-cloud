@@ -6,31 +6,41 @@ data:
   redis-config: ""
 
 ---
-
 apiVersion: v1
 kind: Pod
 metadata:
   name: redis
+  labels:
+    app.kubernetes.io/name: redis
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: In
+                values:
+                  - "true"
   containers:
-  - name: redis
-    image: redis:7.2.3
-    command:
-      - redis-server
-      - "/redis-master/redis.conf"
-    env:
-    - name: MASTER
-      value: "true"
-    ports:
-    - containerPort: 6379
-    resources:
-      limits:
-        cpu: "0.1"
-    volumeMounts:
-    - mountPath: /redis-master-data
-      name: data
-    - mountPath: /redis-master
-      name: config
+    - name: redis
+      image: redis:7.2.3
+      command:
+        - redis-server
+        - "/redis-master/redis.conf"
+      env:
+        - name: MASTER
+          value: "true"
+      ports:
+        - containerPort: 6379
+      resources:
+        limits:
+          cpu: "0.1"
+      volumeMounts:
+        - mountPath: /redis-master-data
+          name: data
+        - mountPath: /redis-master
+          name: config
   volumes:
     - name: data
       emptyDir: {}
@@ -38,5 +48,17 @@ spec:
       configMap:
         name: example-redis-config
         items:
-        - key: redis-config
-          path: redis.conf
+          - key: redis-config
+            path: redis.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  ports:
+    - port: 6379
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: redis
