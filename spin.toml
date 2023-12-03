@@ -7,79 +7,62 @@ authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
 description = "Accepting and serving orders"
 
 [[trigger.http]]
-route = "/"
+route = "/..."
 component = "restaurant"
 
 [component.restaurant]
 source = "target/wasm32-wasi/release/restaurant.wasm"
-allowed_outbound_hosts = []
+environment = { REDIS_ADDRESS = "redis://redis.default.svc.cluster.local:6379", REDIS_CHANNEL = "restaurant" }
+allowed_outbound_hosts = ["redis://redis.default.svc.cluster.local:6379"]
 [component.restaurant.build]
 command = "cargo build --target wasm32-wasi --release"
 watch = ["src/**/*.rs", "Cargo.toml"]
 
-[[trigger.http]]
-route = "/menu"
-component = "menu-api"
+# [[trigger.http]]
+# route = "/menu"
+# component = "menu-api"
 
-[component.menu-api]
-source = "menu-api/target/wasm32-wasi/release/menu_api.wasm"
-allowed_outbound_hosts = []
-[component.menu-api.build]
-command = "cargo build --target wasm32-wasi --release"
-workdir = "menu-api"
-watch = ["src/**/*.rs", "Cargo.toml"]
+# [component.menu-api]
+# source = "menu-api/target/wasm32-wasi/release/menu_api.wasm"
+# allowed_outbound_hosts = []
+# [component.menu-api.build]
+# command = "cargo build --target wasm32-wasi --release"
+# workdir = "menu-api"
+# watch = ["src/**/*.rs", "Cargo.toml"]
 
-[[trigger.http]]
-route = "/kitchen"
-component = "kitchen-api"
+# [[trigger.http]]
+# route = "/kitchen"
+# component = "kitchen-api"
 
-[component.kitchen-api]
-source = "kitchen-api/target/wasm32-wasi/release/kitchen_api.wasm"
-allowed_outbound_hosts = []
-[component.kitchen-api.build]
-command = "cargo build --target wasm32-wasi --release"
-workdir = "kitchen-api"
-watch = ["src/**/*.rs", "Cargo.toml"]
+# [component.kitchen-api]
+# source = "kitchen-api/target/wasm32-wasi/release/kitchen_api.wasm"
+# allowed_outbound_hosts = []
+# [component.kitchen-api.build]
+# command = "cargo build --target wasm32-wasi --release"
+# workdir = "kitchen-api"
+# watch = ["src/**/*.rs", "Cargo.toml"]
 
-[[trigger.http]]
-route = "/order"
-component = "order-api"
+# [[trigger.http]]
+# route = "/order"
+# component = "order-api"
 
-[component.order-api]
-source = "order-api/target/wasm32-wasi/release/order_api.wasm"
-environment = { REDIS_ADDRESS = "redis://redis.default.svc.cluster.local:6379", REDIS_CHANNEL = "restaurant" }
-allowed_outbound_hosts = ["redis://redis.default.svc.cluster.local:6379"]
-[component.order-api.build]
-command = "cargo build --target wasm32-wasi --release"
-workdir = "order-api"
-watch = ["src/**/*.rs", "Cargo.toml"]
+# [component.order-api]
+# source = "order-api/target/wasm32-wasi/release/order_api.wasm"
+# environment = { REDIS_ADDRESS = "redis://redis.default.svc.cluster.local:6379", REDIS_CHANNEL = "restaurant" }
+# allowed_outbound_hosts = ["redis://redis.default.svc.cluster.local:6379"]
+# [component.order-api.build]
+# command = "cargo build --target wasm32-wasi --release"
+# workdir = "order-api"
+# watch = ["src/**/*.rs", "Cargo.toml"]
 
-[[trigger.http]]
-route = "/static/..."
-component = "dupa"
+# [[trigger.http]]
+# route = "/static/..."
+# component = "dupa"
 
-[component.dupa]
-source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.1.0/spin_static_fs.wasm", digest = "sha256:96c76d9af86420b39eb6cd7be5550e3cb5d4cc4de572ce0fd1f6a29471536cb4" }
-files = [{ source = "assets", destination = "/" }]
+# [component.dupa]
+# source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.1.0/spin_static_fs.wasm", digest = "sha256:96c76d9af86420b39eb6cd7be5550e3cb5d4cc4de572ce0fd1f6a29471536cb4" }
+# files = [{ source = "assets", destination = "/" }]
 
-[[trigger.http]]
-route = "/"
-component = "dupa"
-
-[component.dupa]
-source = "dupa/target/dupa.wasm"
-[component.dupa.build]
-command = "npm run build"
-workdir = "dupa"
-
-[[trigger.http]]
-route = "/asa"
-component = "dupa"
-
-[component.dupa]
-source = "dupa/target/wasm32-wasi/release/dupa.wasm"
-allowed_outbound_hosts = []
-[component.dupa.build]
-command = "cargo build --target wasm32-wasi --release"
-workdir = "dupa"
-watch = ["src/**/*.rs", "Cargo.toml"]
+# [[trigger.http]]
+# route = "/"
+# component = "dupa"

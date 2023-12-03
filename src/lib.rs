@@ -1,14 +1,15 @@
-use spin_sdk::http::{IntoResponse, Request};
-use spin_sdk::http_component;
+mod api;
 
-// TODO -- change to empty component
+use api::{get_menu, place_order};
+use spin_sdk::{
+    http::{Request, Response, Router},
+    http_component,
+};
 
-/// A simple Spin HTTP component.
 #[http_component]
-fn handle_restaurant(req: Request) -> anyhow::Result<impl IntoResponse> {
-    println!("Handling request to {:?}", req.header("spin-full-url"));
-    Ok(http::Response::builder()
-        .status(200)
-        .header("content-type", "text/plain")
-        .body("Hello, Fermyon")?)
+fn handle_route(req: Request) -> Response {
+    let mut router = Router::new();
+    router.get("/menu", get_menu);
+    router.post("/order", place_order);
+    router.handle(req)
 }
