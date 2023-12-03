@@ -15,7 +15,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: restaurant
-          image: ogioldat/restaurant:0.17.0
+          image: ogioldat/restaurant:0.20.0
           command: ["/"]
           imagePullPolicy: Always
 ---

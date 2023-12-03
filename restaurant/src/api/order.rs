@@ -1,5 +1,3 @@
-use std::str::from_utf8;
-
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use spin_sdk::{
@@ -9,12 +7,15 @@ use spin_sdk::{
     },
     redis::{self},
 };
+use std::str::from_utf8;
+use uuid::Uuid;
 
 const REDIS_ADDRESS_ENV: &str = "REDIS_ADDRESS";
 const REDIS_CHANNEL_ENV: &str = "REDIS_CHANNEL";
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 struct OrderRecord {
+    id: String,
     name: String,
     state: String,
 }
@@ -26,18 +27,19 @@ pub fn place_order(_req: Request, params: Params) -> Result<impl IntoResponse> {
 
     let order_name = params.get("name").expect("Invalid param");
 
-    let payload = OrderRecord {
+    let order = OrderRecord {
+        id: Uuid::new_v4().to_string(),
         state: "placed".to_string(),
         name: order_name.to_string(),
     };
-    let serialized_payload = serde_json::to_vec(&payload).unwrap();
+    let serialized_payload = serde_json::to_vec(&order).unwrap();
 
     print!("Placing an order for {}", order_name);
 
-    conn.set(&payload.name, &serialized_payload)?;
+    conn.set(&order.id, &serialized_payload)?;
 
     match conn.publish(&channel, &serialized_payload) {
-        Ok(()) => Ok(Response::new(200, ())),
+        Ok(()) => Ok(Response::new(200, serde_json::to_string(&order)?)),
         Err(_e) => Ok(internal_server_error()),
     }
 }
@@ -46,11 +48,11 @@ pub fn check_order(_req: Request, params: Params) -> Result<impl IntoResponse> {
     let address = std::env::var(REDIS_ADDRESS_ENV)?;
     let conn = redis::Connection::open(&address)?;
 
-    let order_name = params.get("name").expect("Invalid param");
+    let order_id = params.get("id").expect("Invalid param");
 
-    print!("Checking order for {}", order_name);
+    print!("Checking order for {}", order_id);
 
-    match conn.get(order_name) {
+    match conn.get(order_id) {
         Ok(Some(order)) => Ok(Response::builder()
             .header("Content-Type", "application/json")
             .body(from_utf8(&order)?)

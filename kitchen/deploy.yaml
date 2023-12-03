@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: kitchen
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: kitchen
@@ -15,7 +15,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: kitchen
-          image: ogioldat/kitchen:0.4.0
+          image: ogioldat/kitchen:0.7.0
           command: ["/"]
           imagePullPolicy: IfNotPresent
 ---

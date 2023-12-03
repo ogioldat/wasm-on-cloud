@@ -2,7 +2,7 @@ spin_manifest_version = 2
 
 [application]
 name = "kitchen"
-version = "0.4.0"
+version = "0.7.0"
 authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
 description = "Preparing orders"
 
@@ -15,6 +15,8 @@ component = "kitchen"
 
 [component.kitchen]
 source = "target/wasm32-wasi/release/kitchen.wasm"
+environment = { REDIS_ADDRESS = "redis://redis.default.svc.cluster.local:6379", REDIS_CHANNEL = "restaurant" }
+allowed_outbound_hosts = ["redis://redis.default.svc.cluster.local:6379"]
 [component.kitchen.build]
 command = "cargo build --target wasm32-wasi --release"
 watch = ["src/**/*.rs", "Cargo.toml"]
