@@ -1,12 +1,11 @@
-use spin_sdk::http::{IntoResponse, Request};
-use spin_sdk::http_component;
+use anyhow::Result;
+use bytes::Bytes;
+use spin_sdk::redis_component;
+use std::str::from_utf8;
 
-/// A simple Spin HTTP component.
-#[http_component]
-fn handle_kitchen_api(req: Request) -> anyhow::Result<impl IntoResponse> {
-    println!("Handling request to {:?}", req.header("spin-full-url"));
-    Ok(http::Response::builder()
-        .status(200)
-        .header("content-type", "text/plain")
-        .body("Hello from the kitchen!")?)
+/// A simple Spin Redis component.
+#[redis_component]
+fn on_message(message: Bytes) -> Result<()> {
+    println!("Śmiga {}", from_utf8(&message)?);
+    Ok(())
 }

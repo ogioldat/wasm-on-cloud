@@ -16,3 +16,10 @@ spec:
                 name: restaurant
                 port:
                   number: 80
+          - path: /kitchen
+            pathType: Prefix
+            backend:
+              service:
+                name: kitchen
+                port:
+                  number: 80
