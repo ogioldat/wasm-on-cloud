@@ -1,6 +1,12 @@
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
-use spin_sdk::http::{IntoResponse, Params, Request, Response};
+use spin_sdk::{
+    http::{responses::internal_server_error, IntoResponse, Params, Request, Response},
+    redis::{self, Payload},
+};
+
+const REDIS_ADDRESS_ENV: &str = "REDIS_ADDRESS";
+const REDIS_CHANNEL_ENV: &str = "REDIS_CHANNEL";
 
 pub fn get_menu(_req: Request, _params: Params) -> Result<impl IntoResponse> {
     println!("Serving menu");
@@ -36,8 +42,22 @@ fn get_menu_items() -> Vec<MenuItem> {
     ]
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+struct PublishPayload {
+    id: String,
+}
+
 pub fn place_order(_req: Request, _params: Params) -> Result<impl IntoResponse> {
-    Ok(Response::new(200, Some("test")))
+    let address = std::env::var(REDIS_ADDRESS_ENV)?;
+    let channel = std::env::var(REDIS_CHANNEL_ENV)?;
+
+    let conn = redis::Connection::open(&address)?;
+    let payload = Payload::new();
+
+    match conn.publish(&channel, &payload) {
+        Ok(()) => Ok(Response::new(200, ())),
+        Err(_e) => Ok(internal_server_error()),
+    }
 }
 
 // // /hello/:planet
