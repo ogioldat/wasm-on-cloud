@@ -1,0 +1,19 @@
+spin_manifest_version = 2
+
+[application]
+name = "restaurant"
+version = "0.14.0"
+authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
+description = "Accepting and serving orders"
+
+[[trigger.http]]
+route = "/..."
+component = "restaurant"
+
+[component.restaurant]
+source = "target/wasm32-wasi/release/restaurant.wasm"
+environment = { REDIS_ADDRESS = "redis://redis.default.svc.cluster.local:6379", REDIS_CHANNEL = "restaurant" }
+allowed_outbound_hosts = ["redis://redis.default.svc.cluster.local:6379"]
+[component.restaurant.build]
+command = "cargo build --target wasm32-wasi --release"
+watch = ["src/**/*.rs", "Cargo.toml"]

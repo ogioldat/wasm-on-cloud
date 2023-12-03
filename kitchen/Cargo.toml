@@ -1,12 +1,12 @@
 [package]
-name = "kitchen-api"
+name = "kitchen"
 authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
 description = "Prepares the order"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-crate-type = [ "cdylib" ]
+crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1"

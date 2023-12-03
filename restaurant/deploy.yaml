@@ -15,7 +15,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: restaurant
-          image: ogioldat/restaurant:0.12.0
+          image: ogioldat/restaurant:0.14.0
           command: ["/"]
           imagePullPolicy: Always
 ---
@@ -31,22 +31,3 @@ spec:
       targetPort: 80
   selector:
     app: restaurant
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: restaurant
-  annotations:
-    ingress.kubernetes.io/ssl-redirect: "false"
-    kubernetes.io/ingress.class: traefik
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: restaurant
-                port:
-                  number: 80
