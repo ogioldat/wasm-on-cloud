@@ -1,6 +1,9 @@
 mod api;
 
-use api::{get_menu, place_order};
+use api::{
+    menu::get_menu,
+    order::{check_order, place_order},
+};
 use spin_sdk::{
     http::{Request, Response, Router},
     http_component,
@@ -10,6 +13,7 @@ use spin_sdk::{
 fn handle_route(req: Request) -> Response {
     let mut router = Router::new();
     router.get("/menu", get_menu);
-    router.post("/order", place_order);
+    router.post("/order/:name", place_order);
+    router.get("/order/:name", check_order);
     router.handle(req)
 }

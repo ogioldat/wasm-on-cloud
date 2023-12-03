@@ -62,3 +62,18 @@ spec:
       protocol: TCP
   selector:
     app.kubernetes.io/name: redis
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-public
+spec:
+  type: NodePort
+  ports:
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP
+      nodePort: 30007
+  selector:
+    app.kubernetes.io/name: redis

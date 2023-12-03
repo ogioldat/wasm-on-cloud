@@ -2,7 +2,7 @@ spin_manifest_version = 2
 
 [application]
 name = "restaurant"
-version = "0.14.0"
+version = "0.17.0"
 authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
 description = "Accepting and serving orders"
 

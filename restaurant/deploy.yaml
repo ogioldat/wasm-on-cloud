@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: restaurant
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: restaurant
@@ -15,7 +15,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: restaurant
-          image: ogioldat/restaurant:0.14.0
+          image: ogioldat/restaurant:0.17.0
           command: ["/"]
           imagePullPolicy: Always
 ---
