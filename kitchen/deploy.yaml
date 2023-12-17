@@ -15,7 +15,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: kitchen
-          image: ogioldat/kitchen:0.7.0
+          image: ogioldat/kitchen:0.8.0
           command: ["/"]
           imagePullPolicy: IfNotPresent
 ---

@@ -2,7 +2,7 @@ spin_manifest_version = 2
 
 [application]
 name = "kitchen"
-version = "0.7.0"
+version = "0.8.0"
 authors = ["ogioldat <tomasz.ogiolda00@gmail.com>"]
 description = "Preparing orders"
 
@@ -10,7 +10,7 @@ description = "Preparing orders"
 address = "redis://redis.default.svc.cluster.local:6379"
 
 [[trigger.redis]]
-channel = "restaurant" # the channel that the trigger subscribes to
+channel = "restaurant"
 component = "kitchen"
 
 [component.kitchen]

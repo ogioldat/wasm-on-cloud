@@ -35,7 +35,7 @@ fn prepare_order(message: Bytes) -> Result<()> {
     println!("Kitchen is preparing the order {:?}", deserialized_message);
 
     let mut rng = rand::thread_rng();
-    let random_int: u64 = rng.gen_range(6..10);
+    let random_int: u64 = rng.gen_range(20..30);
 
     thread::sleep(Duration::new(random_int, 0));
 
