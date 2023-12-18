@@ -1,4 +1,4 @@
-# Projekt inynierski
+# Projekt inżynierski
 
 Klaster Kubernetes uruchamiający aplikacje serwerowe skompilowane do formatu WebAssembly.
 
