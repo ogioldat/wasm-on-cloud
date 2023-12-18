@@ -1,6 +1,6 @@
 # Projekt inynierski
 
-Klaster Kubernetes uruchamiający aplkacje serwerowe skompilowane do formatu WebAssembly.
+Klaster Kubernetes uruchamiający aplikacje serwerowe skompilowane do formatu WebAssembly.
 
 ## Wymagania systemowe
 
@@ -20,7 +20,7 @@ System operacyjny: Linux, MacOS lub Windows
 1. `Docker for Desktop`
    1. [instalacja](https://www.docker.com/products/docker-desktop/)
    2. Włączenie usługi Kubernetesa
-   3. Wybranie poniszych opcji konfiguracyjnych
+   3. Wybranie ponizszych opcji konfiguracyjnych
 
 <img src="./docker-for-desktop-opts.png"/>
 
@@ -33,7 +33,7 @@ System operacyjny: Linux, MacOS lub Windows
 
 ## Architektura aplikacji
 
-Narzędzie `spin` pozwala na tworzenie komponentów aplikacji działających w technologii WebAssembly. Przykładowo, moliwe jest stworzenie komponentów która:
+Narzędzie `spin` pozwala na tworzenie komponentów aplikacji działających w technologii WebAssembly. Przykładowo, molwie jest stworzenie komponentów która:
 
 - przyjmują zapytania HTTP
 - nasłuchują na zdarzenia wysyłane przez bazę danych Redis
@@ -97,7 +97,7 @@ kubectl label nodes k3d-bachelors-project-worker-0 wasm=yes spin=yes
 ```
 
 4. Wczytanie konfiguracji do klastra
-   - `kubectl -rf k8s` -- zaapliokuje konfigurację dla wwszsytkich plików z katalogu `k8s`
+   - `kubectl -rf k8s` -- zaapliokuje konfigurację dla wszystkich plików z katalogu `k8s`
    - `kubectl -f kitchen/deploy.yaml`
    - `kubectl -f restaurant/deploy.yaml`
 
