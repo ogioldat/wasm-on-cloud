@@ -11,9 +11,9 @@ System operacyjny: Linux, MacOS lub Windows
 - `Kubernetes`
 - `Docker`
 - `WebAssembly` i `WebAssembly System Interface`
-- `k3d`
+- `k3d` -- lekka dystrybucja Kubernetesa, pozwala na stworzenie większej ilości węzłow niż 1 jak w przypadku Docker for Desktop
 - `Rust`
-- `spin`
+- `spin` -- to narzędzie dostarczające zestaw funkcji do rozwijania oprogramowania (SDK Software Development Kit) w dla technologii WebAssembly
 
 ## Wymagane narzędzia
 
