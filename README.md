@@ -11,7 +11,7 @@ System operacyjny: Linux, MacOS lub Windows
 - `Kubernetes`
 - `Docker`
 - `WebAssembly` i `WebAssembly System Interface`
-- `k3d` -- lekka dystrybucja Kubernetesa, pozwala na stworzenie większej ilości węzłow niż 1 jak w przypadku Docker for Desktop
+- `k3d` -- lekka dystrybucja Kubernetes, pozwala na stworzenie większej ilości węzłów niż 1 jak w przypadku Docker for Desktop
 - `Rust`
 - `spin` -- to narzędzie dostarczające zestaw funkcji do rozwijania oprogramowania (SDK Software Development Kit) w dla technologii WebAssembly
 
@@ -19,7 +19,6 @@ System operacyjny: Linux, MacOS lub Windows
 
 1. `Docker for Desktop`
    1. [instalacja](https://www.docker.com/products/docker-desktop/)
-   2. Włączenie usługi Kubernetesa
    3. Wybranie ponizszych opcji konfiguracyjnych
 
 <img src="./docker-for-desktop-opts.png"/>
@@ -33,10 +32,7 @@ System operacyjny: Linux, MacOS lub Windows
 
 ## Architektura aplikacji
 
-Narzędzie `spin` pozwala na tworzenie komponentów aplikacji działających w technologii WebAssembly. Przykładowo, molwie jest stworzenie komponentów która:
-
-- przyjmują zapytania HTTP
-- nasłuchują na zdarzenia wysyłane przez bazę danych Redis
+Narzędzie `spin` pozwala na tworzenie komponentów aplikacji działających w technologii WebAssembly. W poniższym projekcie, wymienione narzędzi pozwoliło na przyjmowanie zapytań HTTP oraz nasłuchiwanie na zdarzenia wysyłane przez bazę danych Redis.
 
 ![image](https://github.com/ogioldat/wasm-on-cloud/assets/46226715/8d3642f3-757d-4982-89eb-61fd02d6a6ac)
 
