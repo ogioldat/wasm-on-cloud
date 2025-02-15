@@ -1,4 +1,6 @@
-# **Bachelor's Project**  
+# **WASM on Cloud**  
+
+Bachelor's Project repo.
 
 A Kubernetes cluster running native WebAssembly workloads (this means without docker runtime).
 
