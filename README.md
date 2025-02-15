@@ -1,10 +1,6 @@
-Here's the translated version of your text:  
-
----
-
 # **Bachelor's Project**  
 
-A Kubernetes cluster running server applications compiled to the WebAssembly format.  
+A Kubernetes cluster running native WebAssembly workloads (this means without docker runtime).
 
 ## **System Requirements**  
 
@@ -124,7 +120,5 @@ Assuming all required tools are installed, the following steps will create a Kub
    ```http
    GET http://localhost:8088/order/PIZZA
    ```  
-
----
 
 Let me know if you need further refinements!
