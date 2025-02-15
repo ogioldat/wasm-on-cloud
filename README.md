@@ -1,109 +1,130 @@
-# Projekt inżynierski
+Here's the translated version of your text:  
 
-Klaster Kubernetes uruchamiający aplikacje serwerowe skompilowane do formatu WebAssembly.
+---
 
-## Wymagania systemowe
+# **Bachelor's Project**  
 
-System operacyjny: Linux, MacOS lub Windows
+A Kubernetes cluster running server applications compiled to the WebAssembly format.  
 
-## Stos technologiczny
+## **System Requirements**  
 
-- `Kubernetes`
-- `Docker`
-- `WebAssembly` i `WebAssembly System Interface`
-- `k3d` -- lekka dystrybucja Kubernetes, pozwala na stworzenie większej ilości węzłów niż 1 jak w przypadku Docker for Desktop
-- `Rust`
-- `spin` -- to narzędzie dostarczające zestaw funkcji do rozwijania oprogramowania (SDK Software Development Kit) w dla technologii WebAssembly
+Operating System: Linux, macOS, or Windows  
 
-## Wymagane narzędzia
+## **Technology Stack**  
 
-1. `Docker for Desktop`
-   1. [instalacja](https://www.docker.com/products/docker-desktop/)
-   3. Wybranie ponizszych opcji konfiguracyjnych
+- `Kubernetes`  
+- `Docker`  
+- `WebAssembly` and `WebAssembly System Interface`  
+- `k3d` – a lightweight Kubernetes distribution that allows creating more than one node, unlike Docker for Desktop  
+- `Rust`  
+- `spin` – a tool providing an SDK (Software Development Kit) for WebAssembly application development  
 
-<img src="./docker-for-desktop-opts.png"/>
+## **Required Tools**  
 
-2. `k3d` [instalacja](https://k3d.io/v5.6.0/#releases)
-3. `Rust`
-   1. [instalacja](https://www.rust-lang.org/tools/install)
-   2. Dodanie formatu kompilacji dla WASI
-   `rustup target add wasm32-unknown-unknown`
-4. Klient HTTP, np. `curl`
+1. **`Docker for Desktop`**  
+   1. [Installation](https://www.docker.com/products/docker-desktop/)  
+   2. Select the following configuration options:  
 
-## Architektura aplikacji
+   <img src="./docker-for-desktop-opts.png"/>  
 
-Narzędzie `spin` pozwala na tworzenie komponentów aplikacji działających w technologii WebAssembly. W poniższym projekcie, wymienione narzędzi pozwoliło na przyjmowanie zapytań HTTP oraz nasłuchiwanie na zdarzenia wysyłane przez bazę danych Redis.
+2. **`k3d`** – [Installation](https://k3d.io/v5.6.0/#releases)  
+3. **`Rust`**  
+   1. [Installation](https://www.rust-lang.org/tools/install)  
+   2. Add WASI compilation target:  
+      ```bash
+      rustup target add wasm32-unknown-unknown
+      ```
+4. **HTTP Client**, e.g., `curl`  
 
-![image](https://github.com/ogioldat/wasm-on-cloud/assets/46226715/8d3642f3-757d-4982-89eb-61fd02d6a6ac)
+## **Application Architecture**  
 
-- `Restaurant` -- komponent HTTP, odpowiada za
-  - Zwracanie listy pozycji menu
-  - Składanie zamówienia
-  - Sprawdzanie statusu zamówienia
-- `Kitchen` -- komponent nasłuchujący na zdarzenia Redisa
-  - Po przyjęciu zdarzenia zamówienia nowej pozycji menu, oznacza wygenerowane zamówienie jako gotowe po upłynięciu określonej ilości sekund
+The `spin` tool enables the creation of application components running in WebAssembly. In this project, the listed tools facilitate handling HTTP requests and listening to events sent by a Redis database.  
 
-## Architektura klastra
+![image](https://github.com/ogioldat/wasm-on-cloud/assets/46226715/8d3642f3-757d-4982-89eb-61fd02d6a6ac)  
 
-![image](https://github.com/ogioldat/wasm-on-cloud/assets/46226715/639b7c65-e342-476d-985c-ded2cfce47e4)
+- **`Restaurant`** – HTTP component responsible for:  
+  - Returning a list of menu items  
+  - Placing an order  
+  - Checking the order status  
 
-Klaster posiada 2 węzły
+- **`Kitchen`** – listens to Redis events:  
+  - When receiving an event for a new menu order, it marks the order as ready after a specified delay  
 
-- `k3d-bachelors-project-server-0` -- standardowy węzeł z domyślnym środowiskiem uruchomienioym, działa na nim baza danych Redis
-- `k3d-bachelors-project-worker-0` -- przygotowany do uruchamiania aplikacji w formacie WebAssembly
+## **Cluster Architecture**  
 
-## Struktura projektu
+![image](https://github.com/ogioldat/wasm-on-cloud/assets/46226715/639b7c65-e342-476d-985c-ded2cfce47e4)  
 
-- `k8s` -- pliki konfiguracyjne klastra
-  - `auth.yaml` -- konfiguracja dla konta administratora klastra
-  - `ingress.yaml` -- konfiguracja reguł wejścia ruchu sieciowego oraz routingu klastra
-  - `k3d.yaml` -- konfiguracja narzędzia `k3d`
-  - `redis.yaml` -- konfiguracja bazy danych Redis
-  - `runtime.yaml` -- konfiguracja klasy uruchomieniowej (`RuntimeClass`) dla środowiska uruchomieniowego WebAssembly
-- `kitchen` -- pliki serwisu `kitchen`
-  - `src` -- pliki źródłowe aplikacji
-  - `Cargo.lock` -- plik zawierający informacje o wymaganych wersjach zewnętrznych pakietów
-  - `Cargo.toml` -- plik konfiguracyjny dla programu w języku Rust
-  - `deploy.yaml` -- plik konfiguracyjny wdrożenia do klastra Kubernetes
-  - `spin.toml` -- plik konfiguracyjny dla narzędzia `spin`, więcej informacji [link](https://developer.fermyon.com/spin/v2/writing-apps)
-- `restaurant` -- ta sama struktura jak dla `kitchen`
-- `dashboard.sh` -- pomocniczy skrypt uruchamiający interfejs graficzny Kubernetesa
+The cluster consists of **two nodes**:  
 
-## Uruchomienie klastra od zera
+- **`k3d-bachelors-project-server-0`** – standard node with a default runtime, hosting the Redis database  
+- **`k3d-bachelors-project-worker-0`** – configured to run applications in WebAssembly format  
 
-Zakładając, ze zainstalowane zostały wszystkie wymagane narzędzia w odpowiedni sposób, poniższe kroki stworzą klaster Kubernetes
+## **Project Structure**  
 
-1. Stworzenie klastra z balanserem ruchu sieciowego
+- **`k8s`** – cluster configuration files  
+  - `auth.yaml` – administrator account configuration  
+  - `ingress.yaml` – ingress and cluster routing configuration  
+  - `k3d.yaml` – `k3d` tool configuration  
+  - `redis.yaml` – Redis database configuration  
+  - `runtime.yaml` – `RuntimeClass` configuration for the WebAssembly runtime  
 
-```bash
-k3d cluster create bachelors-project --port "8088:80@loadbalancer"
-``` 
+- **`kitchen`** – `kitchen` service files  
+  - `src` – application source files  
+  - `Cargo.lock` – dependencies and version tracking  
+  - `Cargo.toml` – Rust configuration file  
+  - `deploy.yaml` – Kubernetes deployment configuration  
+  - `spin.toml` – `spin` tool configuration ([more info](https://developer.fermyon.com/spin/v2/writing-apps))  
 
-2. Stworzenie węzła roboczego, uruchamiającego aplikacje w technologii WebAssembly
+- **`restaurant`** – follows the same structure as `kitchen`  
 
-```bash
-k3d node create bachelors-project-worker -c bachelors-project --image="ghcr.io/deislabs/
-containerd-wasm-shims/examples/k3d:latest"
-```
+- **`dashboard.sh`** – a helper script for launching the Kubernetes dashboard  
 
-3. Oznaczenie węzła roboczego etykietą
+## **Cluster Setup from Scratch**  
 
-```bash
-kubectl label nodes k3d-bachelors-project-worker-0 wasm=yes spin=yes
-```
+Assuming all required tools are installed, the following steps will create a Kubernetes cluster:  
 
-4. Wczytanie konfiguracji do klastra
-   - `kubectl -rf k8s` -- zaapliokuje konfigurację dla wszystkich plików z katalogu `k8s`
-   - `kubectl -f kitchen/deploy.yaml`
-   - `kubectl -f restaurant/deploy.yaml`
+1. **Create a cluster with a network load balancer**  
+   ```bash
+   k3d cluster create bachelors-project --port "8088:80@loadbalancer"
+   ```  
 
-**Aplikacja akceptuje zapytania HTTP pod adresem:**
+2. **Create a worker node for running WebAssembly applications**  
+   ```bash
+   k3d node create bachelors-project-worker -c bachelors-project --image="ghcr.io/deislabs/containerd-wasm-shims/examples/k3d:latest"
+   ```  
 
-[http://localhost:8088](http://localhost:8088)
+3. **Label the worker node**  
+   ```bash
+   kubectl label nodes k3d-bachelors-project-worker-0 wasm=yes spin=yes
+   ```  
 
-## Lista obsługiwanych zapytań
+4. **Apply cluster configurations**  
+   ```bash
+   kubectl apply -Rf k8s  # Applies all configurations in the `k8s` directory
+   kubectl apply -f kitchen/deploy.yaml  
+   kubectl apply -f restaurant/deploy.yaml  
+   ```  
 
-1. Odczytanie listy pozycji menu `GET http://localhost:8088/menu`
-2. Złożenie zamówienia, np. pizzy `POST http://localhost:8088/order/PIZZA`
-3. Odczytanie statusu zamówienia np. pizzy `GET http://localhost:8088/order/PIZZA`
+**The application accepts HTTP requests at:**  
+[http://localhost:8088](http://localhost:8088)  
 
+## **Supported API Endpoints**  
+
+1. Retrieve the menu list:  
+   ```http
+   GET http://localhost:8088/menu
+   ```  
+
+2. Place an order (e.g., pizza):  
+   ```http
+   POST http://localhost:8088/order/PIZZA
+   ```  
+
+3. Check the status of an order (e.g., pizza):  
+   ```http
+   GET http://localhost:8088/order/PIZZA
+   ```  
+
+---
+
+Let me know if you need further refinements!
